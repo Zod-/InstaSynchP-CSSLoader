@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Plugin to load and unload CSS urls
 
-// @version     1
+// @version     1.0.1
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-CSSLoader
 // @license     GPL-3.0
@@ -56,12 +56,12 @@ CSSLoader.prototype.executeOnceCore = function() {
                         'href': style.url
                     }).on('load', function () {
                         //fire event after the CSS has been loaded
-                        events.fire('onCSSLoad[{0}]'.format($(this).attr('id')));
+                        events.fire('CSSLoad[{0}]'.format($(this).attr('id')));
                     })
                 );
                 //if the is nothing to load fire the event directly
                 if (style.url === '') {
-                    events.fire('onCSSLoad[{0}]'.format(style.id));
+                    events.fire('CSSLoad[{0}]'.format(style.id));
                 }
             }
         };
@@ -69,4 +69,4 @@ CSSLoader.prototype.executeOnceCore = function() {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.cssLoader = new CSSLoader("1");
+window.plugins.cssLoader = new CSSLoader("1.0.1");
