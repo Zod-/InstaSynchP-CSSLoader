@@ -3,6 +3,35 @@ InstaSynchP-CSSLoader
 
 Plugin to load and unload CSS urls
 
+Framework
+---------
+The `cssLoader` object can be used to add and load styles. There can be several styles sharing a `<link>` so they can replace each other.
+The id of the styles have to be the same for that.
+
+#### `cssLoader.add`
+```javascript
+cssLoader.add({
+    'id': 'id' /*id of the <link> element, name will be used if not set*/
+    'name': 'styleName',
+    'url': 'url',
+    'autoload': true/false
+});
+```
+#### `cssLoader.load`
+```javascript
+cssLoader.load('styleName');
+```
+Events
+------
+To avoid loading issues events will be fired once a style has been loaded with the `<link> onLoad` event
+```javascript
+'CSSLoad[id]': []
+```
+
+Public Variables
+---------
+* `cssLoader.styles` object containing all the styles
+
 License
 -----------
 <InstaSynch - Watch Videos with friends.>
