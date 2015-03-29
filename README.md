@@ -1,7 +1,7 @@
 InstaSynchP-CSSLoader
 =====================
 
-Plugin to load and unload CSS urls
+Framework plugin to load and unload CSS urls
 
 Framework
 ---------

@@ -1,30 +1,12 @@
-// ==UserScript==
-// @name        InstaSynchP CSSLoader
-// @namespace   InstaSynchP
-// @description Plugin to load and unload CSS urls
-
-// @version     1.0.5
-// @author      Zod-
-// @source      https://github.com/Zod-/InstaSynchP-CSSLoader
-// @license     MIT
-
-// @include     *://instasync.com/r/*
-// @include     *://*.instasync.com/r/*
-// @grant       none
-// @run-at      document-start
-
-// @require     https://greasyfork.org/scripts/5647-instasynchp-library/code/InstaSynchP%20Library.js?version=37716
-// ==/UserScript==
-
-function CSSLoader(version) {
-  "use strict";
-  this.version = version;
+function CSSLoader() {
+  'use strict';
+  this.version = '{{ VERSION }}';
   this.name = 'InstaSynchP CSSLoader';
   this.styles = {};
 }
 
 CSSLoader.prototype.executeOnceCore = function () {
-  "use strict";
+  'use strict';
   var th = this;
   window.cssLoader = (function () {
 
@@ -40,7 +22,7 @@ CSSLoader.prototype.executeOnceCore = function () {
 
         //load it
         if (style.autoload) {
-          cssLoader.load(style.name);
+          window.cssLoader.load(style.name);
         }
       },
       'load': function (styleName) {
@@ -58,7 +40,8 @@ CSSLoader.prototype.executeOnceCore = function () {
             var ref = this;
             //fire event after the CSS has been loaded
             setTimeout(function () {
-              events.fire('CSSLoad[{0}]'.format($(ref).attr('id')));
+              events.fire('CSSLoad[{0}]'.format($(ref).attr(
+                'id')));
             }, 1000);
           })
         );
@@ -72,4 +55,4 @@ CSSLoader.prototype.executeOnceCore = function () {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.cssLoader = new CSSLoader('1.0.5');
+window.plugins.cssLoader = new CSSLoader();
