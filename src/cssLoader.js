@@ -5,26 +5,39 @@ function CSSLoader() {
   this.styles = {};
 }
 
+CSSLoader.prototype.parse = function (style) {
+  'use strict';
+  if (!style.id) {
+    style.id = style.name;
+  }
+};
+
+CSSLoader.prototype.save = function (style) {
+  'use strict';
+  this.styles[style.name] = style;
+};
+
+CSSLoader.prototype.autoLoad = function (style) {
+  'use strict';
+  if (style.autoload) {
+    window.cssLoader.load(style.name);
+  }
+};
+
+CSSLoader.prototype.addStyle = function (style) {
+  'use strict';
+  var _this = this;
+  _this.parse(style);
+  _this.save(style);
+  _this.autoLoad(style);
+};
+
 CSSLoader.prototype.executeOnceCore = function () {
   'use strict';
   var _this = this;
   window.cssLoader = (function () {
 
     return {
-      'add': function (style) {
-        //set the id as the name if it didn't get set
-        if (!style.id) {
-          style.id = style.name;
-        }
-
-        //save the style
-        _this.styles[style.name] = style;
-
-        //load it
-        if (style.autoload) {
-          window.cssLoader.load(style.name);
-        }
-      },
       'load': function (styleName) {
         var style = _this.styles[styleName];
         var id = '#{0}'.format(style.id);

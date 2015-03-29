@@ -1,6 +1,6 @@
 QUnit.module('CSSLoader');
 
-QUnit.test('Add minimal', function (assert) {
+QUnit.test('Save', function (assert) {
   'use strict';
   var cssLoader = new CSSLoader();
   var style = {
@@ -8,16 +8,13 @@ QUnit.test('Add minimal', function (assert) {
     url: 'http://foo.bar/baz.css'
   };
 
-  cssLoader.executeOnceCore();
-  window.cssLoader.add(style);
+  cssLoader.save(style);
 
-  assert.strictEqual(cssLoader.styles[style.name].name,
-    style.name, 'Name is the same');
-  assert.strictEqual(cssLoader.styles[style.name].url,
-    style.url, 'Url is the same');
+  assert.deepEqual(cssLoader.styles[style.name], style,
+    'Object has been added to the collection');
 });
 
-QUnit.test('Add id autoset', function (assert) {
+QUnit.test('Parse', function (assert) {
   'use strict';
   var cssLoader = new CSSLoader();
   var style = {
@@ -25,14 +22,12 @@ QUnit.test('Add id autoset', function (assert) {
     url: 'http://foo.bar/baz.css'
   };
 
-  cssLoader.executeOnceCore();
-  window.cssLoader.add(style);
+  cssLoader.parse(style);
 
-  assert.strictEqual(cssLoader.styles[style.name].id,
-    style.name, 'Id is the same as the name');
+  assert.strictEqual(style.id, style.name, 'Id is the same as the name');
 });
 
-QUnit.test('Add id set', function (assert) {
+QUnit.test('Parse not overwrite id', function (assert) {
   'use strict';
   var cssLoader = new CSSLoader();
   var style = {
@@ -41,37 +36,12 @@ QUnit.test('Add id set', function (assert) {
     url: 'http://foo.bar/baz.css'
   };
 
-  cssLoader.executeOnceCore();
-  window.cssLoader.add(style);
+  cssLoader.parse(style);
 
-  assert.strictEqual(cssLoader.styles[style.name].id,
-    style.id, 'Id wasn\'t changed');
+  assert.strictEqual(style.id, style.id, 'Id wasn\'t changed');
 });
 
-QUnit.test('Add autoload', function (assert) {
-  'use strict';
-  var cssLoader = new CSSLoader();
-  var eventFired;
-  var style = {
-    name: 'abc',
-    url: '',
-    autoload: true
-  };
-
-  window.events = {
-    fire: function (eventName) {
-      eventFired = eventName;
-    }
-  };
-
-  cssLoader.executeOnceCore();
-  window.cssLoader.add(style);
-
-  assert.strictEqual(eventFired, 'CSSLoad[' + style.name + ']',
-    'CSSLoad event fired');
-});
-
-QUnit.test('Add autoload id', function (assert) {
+QUnit.test('Autoload', function (assert) {
   'use strict';
   var cssLoader = new CSSLoader();
   var eventFired;
@@ -89,7 +59,8 @@ QUnit.test('Add autoload id', function (assert) {
   };
 
   cssLoader.executeOnceCore();
-  window.cssLoader.add(style);
+  cssLoader.save(style);
+  cssLoader.autoLoad(style);
 
   assert.strictEqual(eventFired, 'CSSLoad[' + style.id + ']',
     'CSSLoad event fired');
@@ -118,8 +89,8 @@ QUnit.test('Multiple style same id load', function (assert) {
   };
 
   cssLoader.executeOnceCore();
-  window.cssLoader.add(style1);
-  window.cssLoader.add(style2);
+  cssLoader.addStyle(style1);
+  cssLoader.addStyle(style2);
 
   window.cssLoader.load(style1.name);
   assert.strictEqual(eventFired, 'CSSLoad[' + styleId + ']',
