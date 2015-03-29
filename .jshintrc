@@ -1,6 +1,7 @@
 {
   "globals": {
-    "events":    true
+    "events":    true,
+    "CSSLoader": true
   },
   "qunit":       true,
   "jquery":      true,
