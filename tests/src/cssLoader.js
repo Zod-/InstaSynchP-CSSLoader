@@ -130,4 +130,3 @@ QUnit.test('Multiple style same id load', function (assert) {
   assert.strictEqual(eventFired, 'CSSLoad[' + styleId + ']',
     'CSSLoad event fired');
 });
-g
