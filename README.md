@@ -1,4 +1,4 @@
-InstaSynchP-CSSLoader
+InstaSynchP-CSSLoader [![Build Status](https://travis-ci.org/Zod-/InstaSynchP-CSSLoader.svg?branch=master)](https://travis-ci.org/Zod-/InstaSynchP-CSSLoader)
 =====================
 
 Framework plugin to load and unload CSS urls
