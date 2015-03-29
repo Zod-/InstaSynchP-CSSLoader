@@ -7,7 +7,7 @@ function CSSLoader() {
 
 CSSLoader.prototype.executeOnceCore = function () {
   'use strict';
-  var th = this;
+  var _this = this;
   window.cssLoader = (function () {
 
     return {
@@ -18,7 +18,7 @@ CSSLoader.prototype.executeOnceCore = function () {
         }
 
         //save the style
-        th.styles[style.name] = style;
+        _this.styles[style.name] = style;
 
         //load it
         if (style.autoload) {
@@ -26,8 +26,8 @@ CSSLoader.prototype.executeOnceCore = function () {
         }
       },
       'load': function (styleName) {
-        var style = th.styles[styleName],
-          id = '#{0}'.format(style.id);
+        var style = _this.styles[styleName];
+        var id = '#{0}'.format(style.id);
         $(id).remove();
 
         $('head').append(
@@ -37,10 +37,10 @@ CSSLoader.prototype.executeOnceCore = function () {
             'id': style.id,
             'href': style.url
           }).on('load', function () {
-            var ref = this;
+            var __this = this;
             //fire event after the CSS has been loaded
             setTimeout(function () {
-              events.fire('CSSLoad[{0}]'.format($(ref).attr(
+              events.fire('CSSLoad[{0}]'.format($(__this).attr(
                 'id')));
             }, 1000);
           })
