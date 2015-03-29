@@ -17,7 +17,7 @@ CSSLoader.prototype.save = function (style) {
   this.styles[style.name] = style;
 };
 
-CSSLoader.prototype.autoLoad = function (style) {
+CSSLoader.prototype.autoload = function (style) {
   'use strict';
   var _this = this;
   if (style.autoload) {
@@ -30,7 +30,7 @@ CSSLoader.prototype.addStyle = function (style) {
   var _this = this;
   _this.parse(style);
   _this.save(style);
-  _this.autoLoad(style);
+  _this.autoload(style);
 };
 
 CSSLoader.prototype.fireLoadEvent = function (id) {

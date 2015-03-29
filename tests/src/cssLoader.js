@@ -75,12 +75,12 @@ QUnit.test('Autoload', function (assert) {
   };
 
   cssLoader.save(style);
-  cssLoader.autoLoad(style);
+  cssLoader.autoload(style);
 
   assert.strictEqual(styleName, undefined, 'loadStyle not called');
 
   style.autoload = true;
-  cssLoader.autoLoad(style);
+  cssLoader.autoload(style);
 
   assert.strictEqual(styleName, style.name, 'loadStyle called');
 });
