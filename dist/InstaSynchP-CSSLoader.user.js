@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Framework plugin to load and unload CSS urls
 
-// @version     1.0.5
+// @version     1.0.6
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-CSSLoader
 // @license     MIT
@@ -16,60 +16,112 @@
 // @require     https://greasyfork.org/scripts/5647-instasynchp-library/code/code.js?version=37716
 // ==/UserScript==
 
-function CSSLoader() {
+function Style(opts) {
   'use strict';
-  this.version = '1.0.5';
-  this.name = 'InstaSynchP CSSLoader';
-  this.styles = {};
+  this.name = opts.name;
+  this.url = opts.url;
+  this.autoload = opts.autoload;
+  this.id = opts.id || this.name;
+  this.content = opts.content;
+  this.urlSetting = '{0}-css-url'.format(this.name);
+  this.contentSetting = '{0}-css-content'.format(this.name);
+  if (this.autoload) {
+    this.load();
+  }
 }
 
-CSSLoader.prototype.executeOnceCore = function () {
+Style.prototype.onLoad = function () {
   'use strict';
-  var th = this;
-  window.cssLoader = (function () {
+  var _this = this;
+  _this.fillElement();
+  events.fire('CSSLoad[{0}]'.format(_this.id));
+};
 
-    return {
-      'add': function (style) {
-        //set the id as the name if it didn't get set
-        if (!style.id) {
-          style.id = style.name;
-        }
+Style.prototype.unLoad = function () {
+  'use strict';
+  var _this = this;
+  $('#{0}'.format(_this.id)).remove();
+};
 
-        //save the style
-        th.styles[style.name] = style;
+Style.prototype.createElement = function () {
+  'use strict';
+  var _this = this;
+  $('head').append(
+    $('<style>', {
+      'type': 'text/css',
+      'id': _this.id
+    })
+  );
+};
 
-        //load it
-        if (style.autoload) {
-          window.cssLoader.load(style.name);
-        }
-      },
-      'load': function (styleName) {
-        var style = th.styles[styleName],
-          id = '#{0}'.format(style.id);
-        $(id).remove();
+Style.prototype.getContentAsync = function () {
+  'use strict';
+  var _this = this;
+  $.ajax({
+    type: 'GET',
+    url: _this.url,
+    success: function (content) {
+      _this.content = content;
+      _this.save();
+      _this.onLoad();
+    }
+  });
+};
 
-        $('head').append(
-          $('<link>', {
-            'rel': 'stylesheet',
-            'type': 'text/css',
-            'id': style.id,
-            'href': style.url
-          }).on('load', function () {
-            var ref = this;
-            //fire event after the CSS has been loaded
-            setTimeout(function () {
-              events.fire('CSSLoad[{0}]'.format($(ref).attr(
-                'id')));
-            }, 1000);
-          })
-        );
-        //if the is nothing to load fire the event directly
-        if (style.url === '') {
-          events.fire('CSSLoad[{0}]'.format(style.id));
-        }
-      }
-    };
-  }());
+Style.prototype.save = function () {
+  'use strict';
+  var _this = this;
+  gmc.set(_this.urlSetting, _this.url);
+  gmc.set(_this.contentSetting, _this.content);
+  window.plugins.settings.save();
+};
+
+Style.prototype.getContent = function () {
+  'use strict';
+  var _this = this;
+  if (!_this.url) {
+    return true;
+  }
+  if (_this.url === gmc.get(_this.urlSetting)) {
+    _this.content = gmc.get(_this.contentSetting);
+    return true;
+  }
+  _this.getContentAsync();
+  return false;
+};
+
+Style.prototype.fillElement = function () {
+  'use strict';
+  var _this = this;
+  $('#{0}'.format(_this.id)).text(_this.content);
+};
+
+Style.prototype.load = function () {
+  'use strict';
+  var _this = this;
+  _this.unLoad();
+  _this.createElement();
+  if (_this.getContent()) {
+    _this.onLoad();
+  }
+};
+
+function CSSLoader() {
+  'use strict';
+  this.version = '1.0.6';
+  this.name = 'InstaSynchP CSSLoader';
+  this.styles = {};
+  this.Style = Style;
+}
+
+CSSLoader.prototype.addStyle = function (opts) {
+  'use strict';
+  this.styles[opts.name] = new this.Style(opts);
+};
+
+CSSLoader.prototype.loadStyle = function (styleName) {
+  'use strict';
+  this.styles[styleName].load();
 };
 
 window.plugins = window.plugins || {};
