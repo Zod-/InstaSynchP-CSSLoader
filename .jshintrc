@@ -2,7 +2,8 @@
   "globals": {
     "events":    true,
     "CSSLoader": true,
-    "Style":     true
+    "Style":     true,
+    "gmc":       true
   },
   "qunit":       true,
   "jquery":      true,

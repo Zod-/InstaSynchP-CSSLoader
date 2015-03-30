@@ -42,29 +42,3 @@ QUnit.test('Load', function (assert) {
   cssLoader.loadStyle(opts2.name);
   assert.strictEqual(called, opts2.name, 'Correct style loaded');
 });
-
-QUnit.test('Multiple id load', function (assert) {
-  'use strict';
-  var cssLoader = new CSSLoader();
-  var opts1 = {
-    id: 'same_id',
-    name: 'abc1',
-    url: 'foo'
-  };
-  var opts2 = {
-    id: 'same_id',
-    name: 'abc2',
-    url: 'bar'
-  };
-
-  cssLoader.addStyle(opts1);
-  cssLoader.addStyle(opts2);
-
-  cssLoader.loadStyle(opts1.name);
-  assert.strictEqual($('#same_id').attr('href'), opts1.url,
-  'Correct style loaded');
-
-  cssLoader.loadStyle(opts2.name);
-  assert.strictEqual($('#same_id').attr('href'), opts2.url,
-  'Correct style loaded');
-});

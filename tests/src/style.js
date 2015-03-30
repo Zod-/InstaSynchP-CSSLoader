@@ -21,7 +21,6 @@ QUnit.test('Constructor id overwrite', function (assert) {
   assert.strictEqual(style.id, style.id, 'Id wasn\'t changed');
 });
 
-
 QUnit.test('Fire load event', function (assert) {
   'use strict';
   var eventFired;
@@ -56,7 +55,21 @@ QUnit.test('Unload', function (assert) {
     'Element has been unloaded');
 });
 
-QUnit.test('Create link element', function (assert) {
+QUnit.test('Fill', function (assert) {
+  'use strict';
+  var opts = {
+    id: 'el_to_fill',
+    content: 'foo'
+  };
+  var style = new Style(opts);
+
+  style.fillElement();
+
+  assert.strictEqual($('#' + style.id).text(), 'foo',
+  'Element has been filled');
+});
+
+QUnit.test('Create element', function (assert) {
   'use strict';
   var opts = {
     id: 'element_to_create',
@@ -65,12 +78,9 @@ QUnit.test('Create link element', function (assert) {
   };
   var style = new Style(opts);
 
-  style.createLinkElement();
+  style.createElement();
 
   assert.strictEqual($('#' + style.id).length, 1,
-    'Element has been created');
-
-  assert.strictEqual($('#' + style.id).attr('href'), opts.url,
     'Element has been created');
 });
 
