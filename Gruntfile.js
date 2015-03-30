@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         dest: 'tests/test.js',
       },
       dist: {
-        src: ['src/meta.js', 'src/cssLoader.js'],
+        src: ['src/meta.js', 'src/style.js', 'src/cssLoader.js'],
         dest: 'dist/InstaSynchP-CSSLoader.user.js'
       }
     },
