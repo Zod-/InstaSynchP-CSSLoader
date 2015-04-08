@@ -30,4 +30,4 @@ window.logger = function() {
     info: log,
     error: log
   };
-}
+};
