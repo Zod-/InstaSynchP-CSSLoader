@@ -3,7 +3,8 @@
     "events":    true,
     "CSSLoader": true,
     "Style":     true,
-    "gmc":       true
+    "gmc":       true,
+    "logger":    true
   },
   "qunit":       true,
   "jquery":      true,

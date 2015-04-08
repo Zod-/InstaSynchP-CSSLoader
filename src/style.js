@@ -12,6 +12,21 @@ function Style(opts) {
   }
 }
 
+Style.prototype.log = function (opts) {
+  'use strict';
+  var args = [];
+  opts.type = opts.type || 'debug';
+  args.push('Style ' + this.name);
+  args.push(opts.event);
+  if (opts.url) {
+   args.push(opts.url);
+  }
+  if (opts.text) {
+   args.push(opts.text);
+  }
+  logger()[opts.type].apply(logger(), args);
+};
+
 Style.prototype.onLoad = function () {
   'use strict';
   var _this = this;
@@ -39,13 +54,30 @@ Style.prototype.createElement = function () {
 Style.prototype.getContentAsync = function () {
   'use strict';
   var _this = this;
+  _this.log({
+    event: 'Downloading CSS',
+    type: 'info',
+    url: _this.url
+  });
   $.ajax({
     type: 'GET',
     url: _this.url,
     success: function (content) {
+     _this.log({
+       event: 'Downloading successful',
+       type: 'info'
+     });
       _this.content = content;
       _this.save();
       _this.onLoad();
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+     _this.log({
+       event: 'Downloading error',
+       type: 'error',
+       url: _this.url,
+       text: textStatus + ' ' + errorThrown
+     });
     }
   });
 };
@@ -53,6 +85,10 @@ Style.prototype.getContentAsync = function () {
 Style.prototype.save = function () {
   'use strict';
   var _this = this;
+  _this.log({
+    event: 'Save CSS',
+    text: _this.contentSetting
+  });
   gmc.set(_this.urlSetting, _this.url);
   gmc.set(_this.contentSetting, _this.content);
   window.plugins.settings.save();
@@ -66,6 +102,10 @@ Style.prototype.getContent = function () {
   }
   if (_this.url === gmc.get(_this.urlSetting)) {
     _this.content = gmc.get(_this.contentSetting);
+    _this.log({
+      event: 'Get local CSS',
+      type: 'info'
+    });
     return true;
   }
   _this.getContentAsync();

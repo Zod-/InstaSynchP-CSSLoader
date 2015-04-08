@@ -6,15 +6,38 @@ function CSSLoader() {
   this.Style = Style;
 }
 
+CSSLoader.prototype.log = function (opts) {
+  'use strict';
+  var args = [];
+  opts.type = opts.type || 'debug';
+  args.push(this.name);
+  args.push(opts.event);
+  if (opts.style) {
+    args.push(opts.style.id);
+    args.push(opts.style.name);
+    args.push(opts.style.url);
+  }
+  logger()[opts.type].apply(logger(), args);
+};
+
 CSSLoader.prototype.addStyle = function (opts) {
   'use strict';
-  this.styles[opts.name] = new this.Style(opts);
+  var _this = this;
+  _this.styles[opts.name] = new _this.Style(opts);
+  _this.log({
+    event: 'Add style',
+    style: _this.styles[opts.name]
+  });
 };
 
 CSSLoader.prototype.loadStyle = function (styleName) {
   'use strict';
-  this.styles[styleName].load();
+  var _this = this;
+  _this.styles[styleName].load();
+  _this.log({
+    event: 'Load style',
+    style: _this.styles[styleName]
+  });
 };
-
 window.plugins = window.plugins || {};
 window.plugins.cssLoader = new CSSLoader();

@@ -18,3 +18,16 @@ if (typeof String.prototype.format !== 'function') {
     return theString;
   };
 }
+
+function logger() {
+  'use strict';
+  function log() {
+    console.log(arguments);
+  }
+
+  return {
+    debug: log,
+    info: log,
+    error: log
+  };
+}
