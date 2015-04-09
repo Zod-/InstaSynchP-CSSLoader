@@ -5,15 +5,17 @@ Framework plugin to load and unload CSS urls
 
 Framework
 ---------
-The `cssLoader` object can be used to add and load styles. There can be several styles sharing a `<style>` so they can replace each other.
-The id of the styles have to be the same for that.
+The `cssLoader` plugin can be used to add and load styles. There can be several styles sharing a `<style>` so they can replace each other.
+The id of the styles have to be the same for that. By default the name of the style will be used as the id.
 
-The CSS will be stored in a hidden setting to reduce loading times.
+The CSS content will be stored in a hidden setting to reduce loading times.
 
-#### `cssLoader.addStyle`
+Plugins can put their styles in a array at `plugin.styles` where they will be grabbed by the core and added to the `cssLoader`.
+
+#### `plugins.cssLoader.addStyle`
 ```javascript
-cssLoader.addStyle({
-    'id': 'id' /*id of the <style> element, name will be used if not set*/
+plugins.cssLoader.addStyle({
+    'id': 'id'
     'name': 'styleName',
     'url': 'url',
     'autoload': true/false
@@ -21,7 +23,7 @@ cssLoader.addStyle({
 ```
 #### `cssLoader.loadStyle`
 ```javascript
-cssLoader.loadStyle('styleName');
+plugins.cssLoader.loadStyle('styleName');
 ```
 Events
 ------
@@ -31,7 +33,7 @@ Events
 
 Public Variables
 ---------
-* `cssLoader.styles` object containing all the styles
+* `cssLoader.styles` object containing all the styles with their name as keys
 
 License
 -----------
