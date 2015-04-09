@@ -10,7 +10,7 @@ The id of the styles have to be the same for that. By default the name of the st
 
 The CSS content will be stored in a hidden setting to reduce loading times.
 
-Plugins can put their styles in a array at `plugin.styles` where they will be grabbed by the core and added to the `cssLoader`.
+Plugins can put their styles in an array at `plugin.styles` where they will be grabbed by the core and added to the `cssLoader`.
 
 #### `plugins.cssLoader.addStyle`
 ```javascript
@@ -21,7 +21,7 @@ plugins.cssLoader.addStyle({
     'autoload': true/false
 });
 ```
-#### `cssLoader.loadStyle`
+#### `plugins.cssLoader.loadStyle`
 ```javascript
 plugins.cssLoader.loadStyle('styleName');
 ```
